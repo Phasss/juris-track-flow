@@ -28,7 +28,12 @@ function ClientesPage() {
           className="pointer-events-none absolute top-1/2 left-4 size-4 -translate-y-1/2 text-muted-foreground"
           strokeWidth={1.5}
         />
-        <Input value={busca} onChange={setBusca} placeholder="Buscar cliente..." className="pl-11" />
+        <Input
+          value={busca}
+          onChange={setBusca}
+          placeholder="Buscar cliente..."
+          className="pl-11"
+        />
       </div>
 
       {lista.length === 0 ? (

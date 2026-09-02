@@ -1,34 +1,65 @@
 import { useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  LayoutDashboard,
-  Scale,
-  Users,
-  ListChecks,
-  Settings,
-  Menu,
-  X,
-  LogOut,
+  BarChart3,
+  CalendarDays,
+  FolderOpen,
   Gavel,
+  LayoutDashboard,
+  ListChecks,
+  LogOut,
+  Menu,
+  Plus,
+  Scale,
+  Settings,
+  SquareCheckBig,
+  Users,
+  X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/lib/app-store";
 
-const nav = [
-  { to: "/app", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { to: "/app/processos", label: "Processos", icon: Gavel, exact: false },
-  { to: "/app/clientes", label: "Clientes", icon: Users, exact: false },
-  { to: "/app/checklists", label: "Check-lists", icon: ListChecks, exact: false },
-  { to: "/app/configuracoes", label: "Configurações", icon: Settings, exact: false },
+const grupos = [
+  {
+    titulo: null,
+    itens: [
+      { to: "/app", label: "Dashboard", icon: LayoutDashboard, exact: true },
+      { to: "/app/processos", label: "Processos", icon: Gavel, exact: false },
+      { to: "/app/clientes", label: "Clientes", icon: Users, exact: false },
+    ],
+  },
+  {
+    titulo: "Rotina",
+    itens: [
+      { to: "/app/agenda", label: "Agenda", icon: CalendarDays, exact: false },
+      { to: "/app/tarefas", label: "Tarefas", icon: SquareCheckBig, exact: false },
+      { to: "/app/documentos", label: "Documentos", icon: FolderOpen, exact: false },
+    ],
+  },
+  {
+    titulo: "Escritório",
+    itens: [
+      { to: "/app/relatorios", label: "Relatórios", icon: BarChart3, exact: false },
+      { to: "/app/checklists", label: "Check-lists", icon: ListChecks, exact: false },
+      { to: "/app/configuracoes", label: "Configurações", icon: Settings, exact: false },
+    ],
+  },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
-  const { perfil, sair } = useApp();
+  const { perfil, sair, tarefas, processos } = useApp();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   const isActive = (to: string, exact: boolean) =>
     exact ? pathname === to : pathname === to || pathname.startsWith(`${to}/`);
+
+  const tarefasAbertas = tarefas.filter((t) => t.status !== "concluida").length;
+
+  const contadores: Record<string, number> = {
+    "/app/processos": processos.length,
+    "/app/tarefas": tarefasAbertas,
+  };
 
   const sidebar = (
     <div className="flex h-full flex-col bg-primary text-primary-foreground">
@@ -41,22 +72,50 @@ export function AppShell({ children }: { children: ReactNode }) {
         </span>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3">
-        {nav.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            onClick={() => setOpen(false)}
-            className={cn(
-              "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-colors",
-              isActive(item.to, item.exact)
-                ? "bg-primary-foreground/10 text-primary-foreground"
-                : "text-primary-foreground/65 hover:bg-primary-foreground/5 hover:text-primary-foreground",
+      <div className="px-3 pb-4">
+        <Link
+          to="/app/processos/novo"
+          onClick={() => setOpen(false)}
+          className="flex items-center justify-center gap-2 rounded-xl bg-accent px-3.5 py-2.5 text-sm font-medium text-accent-foreground transition-[filter] hover:brightness-95"
+        >
+          <Plus className="size-4" strokeWidth={2} />
+          Novo processo
+        </Link>
+      </div>
+
+      <nav className="flex-1 space-y-5 overflow-y-auto px-3 pb-4">
+        {grupos.map((grupo, i) => (
+          <div key={grupo.titulo ?? `grupo-${i}`} className="space-y-1">
+            {grupo.titulo && (
+              <p className="px-3.5 pb-1 text-[0.6875rem] font-medium tracking-wider text-primary-foreground/40 uppercase">
+                {grupo.titulo}
+              </p>
             )}
-          >
-            <item.icon className="size-4.5 shrink-0" strokeWidth={1.5} />
-            <span className="truncate">{item.label}</span>
-          </Link>
+            {grupo.itens.map((item) => {
+              const contador = contadores[item.to];
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm transition-colors",
+                    isActive(item.to, item.exact)
+                      ? "bg-primary-foreground/10 text-primary-foreground"
+                      : "text-primary-foreground/65 hover:bg-primary-foreground/5 hover:text-primary-foreground",
+                  )}
+                >
+                  <item.icon className="size-4.5 shrink-0" strokeWidth={1.5} />
+                  <span className="min-w-0 flex-1 truncate">{item.label}</span>
+                  {typeof contador === "number" && contador > 0 && (
+                    <span className="shrink-0 rounded-full bg-primary-foreground/10 px-2 py-0.5 text-xs tabular-nums">
+                      {contador}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         ))}
       </nav>
 

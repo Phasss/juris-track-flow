@@ -13,8 +13,17 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAgendaIndexRouteImport } from './routes/app.agenda.index'
+import { Route as AppChecklistsIndexRouteImport } from './routes/app.checklists.index'
 import { Route as AppClientesIndexRouteImport } from './routes/app.clientes.index'
+import { Route as AppClientesIdRouteImport } from './routes/app.clientes.$id'
+import { Route as AppConfiguracoesIndexRouteImport } from './routes/app.configuracoes.index'
+import { Route as AppDocumentosIndexRouteImport } from './routes/app.documentos.index'
 import { Route as AppProcessosIndexRouteImport } from './routes/app.processos.index'
+import { Route as AppProcessosIdRouteImport } from './routes/app.processos.$id'
+import { Route as AppProcessosNovoRouteImport } from './routes/app.processos.novo'
+import { Route as AppRelatoriosIndexRouteImport } from './routes/app.relatorios.index'
+import { Route as AppTarefasIndexRouteImport } from './routes/app.tarefas.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -36,14 +45,59 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAgendaIndexRoute = AppAgendaIndexRouteImport.update({
+  id: '/agenda/',
+  path: '/agenda/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChecklistsIndexRoute = AppChecklistsIndexRouteImport.update({
+  id: '/checklists/',
+  path: '/checklists/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppClientesIndexRoute = AppClientesIndexRouteImport.update({
   id: '/clientes/',
   path: '/clientes/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppClientesIdRoute = AppClientesIdRouteImport.update({
+  id: '/clientes/$id',
+  path: '/clientes/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppConfiguracoesIndexRoute = AppConfiguracoesIndexRouteImport.update({
+  id: '/configuracoes/',
+  path: '/configuracoes/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDocumentosIndexRoute = AppDocumentosIndexRouteImport.update({
+  id: '/documentos/',
+  path: '/documentos/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppProcessosIndexRoute = AppProcessosIndexRouteImport.update({
   id: '/processos/',
   path: '/processos/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProcessosIdRoute = AppProcessosIdRouteImport.update({
+  id: '/processos/$id',
+  path: '/processos/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProcessosNovoRoute = AppProcessosNovoRouteImport.update({
+  id: '/processos/novo',
+  path: '/processos/novo',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRelatoriosIndexRoute = AppRelatoriosIndexRouteImport.update({
+  id: '/relatorios/',
+  path: '/relatorios/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTarefasIndexRoute = AppTarefasIndexRouteImport.update({
+  id: '/tarefas/',
+  path: '/tarefas/',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -52,15 +106,33 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/app/': typeof AppIndexRoute
+  '/app/clientes/$id': typeof AppClientesIdRoute
+  '/app/processos/$id': typeof AppProcessosIdRoute
+  '/app/processos/novo': typeof AppProcessosNovoRoute
+  '/app/agenda/': typeof AppAgendaIndexRoute
+  '/app/checklists/': typeof AppChecklistsIndexRoute
   '/app/clientes/': typeof AppClientesIndexRoute
+  '/app/configuracoes/': typeof AppConfiguracoesIndexRoute
+  '/app/documentos/': typeof AppDocumentosIndexRoute
   '/app/processos/': typeof AppProcessosIndexRoute
+  '/app/relatorios/': typeof AppRelatoriosIndexRoute
+  '/app/tarefas/': typeof AppTarefasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/app': typeof AppIndexRoute
+  '/app/clientes/$id': typeof AppClientesIdRoute
+  '/app/processos/$id': typeof AppProcessosIdRoute
+  '/app/processos/novo': typeof AppProcessosNovoRoute
+  '/app/agenda': typeof AppAgendaIndexRoute
+  '/app/checklists': typeof AppChecklistsIndexRoute
   '/app/clientes': typeof AppClientesIndexRoute
+  '/app/configuracoes': typeof AppConfiguracoesIndexRoute
+  '/app/documentos': typeof AppDocumentosIndexRoute
   '/app/processos': typeof AppProcessosIndexRoute
+  '/app/relatorios': typeof AppRelatoriosIndexRoute
+  '/app/tarefas': typeof AppTarefasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,23 +140,69 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/login': typeof LoginRoute
   '/app/': typeof AppIndexRoute
+  '/app/clientes/$id': typeof AppClientesIdRoute
+  '/app/processos/$id': typeof AppProcessosIdRoute
+  '/app/processos/novo': typeof AppProcessosNovoRoute
+  '/app/agenda/': typeof AppAgendaIndexRoute
+  '/app/checklists/': typeof AppChecklistsIndexRoute
   '/app/clientes/': typeof AppClientesIndexRoute
+  '/app/configuracoes/': typeof AppConfiguracoesIndexRoute
+  '/app/documentos/': typeof AppDocumentosIndexRoute
   '/app/processos/': typeof AppProcessosIndexRoute
+  '/app/relatorios/': typeof AppRelatoriosIndexRoute
+  '/app/tarefas/': typeof AppTarefasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/app' | '/login' | '/app/' | '/app/clientes/' | '/app/processos/'
+    | '/'
+    | '/app'
+    | '/login'
+    | '/app/'
+    | '/app/clientes/$id'
+    | '/app/processos/$id'
+    | '/app/processos/novo'
+    | '/app/agenda/'
+    | '/app/checklists/'
+    | '/app/clientes/'
+    | '/app/configuracoes/'
+    | '/app/documentos/'
+    | '/app/processos/'
+    | '/app/relatorios/'
+    | '/app/tarefas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/app' | '/app/clientes' | '/app/processos'
+  to:
+    | '/'
+    | '/login'
+    | '/app'
+    | '/app/clientes/$id'
+    | '/app/processos/$id'
+    | '/app/processos/novo'
+    | '/app/agenda'
+    | '/app/checklists'
+    | '/app/clientes'
+    | '/app/configuracoes'
+    | '/app/documentos'
+    | '/app/processos'
+    | '/app/relatorios'
+    | '/app/tarefas'
   id:
     | '__root__'
     | '/'
     | '/app'
     | '/login'
     | '/app/'
+    | '/app/clientes/$id'
+    | '/app/processos/$id'
+    | '/app/processos/novo'
+    | '/app/agenda/'
+    | '/app/checklists/'
     | '/app/clientes/'
+    | '/app/configuracoes/'
+    | '/app/documentos/'
     | '/app/processos/'
+    | '/app/relatorios/'
+    | '/app/tarefas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -123,11 +241,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/agenda/': {
+      id: '/app/agenda/'
+      path: '/agenda'
+      fullPath: '/app/agenda/'
+      preLoaderRoute: typeof AppAgendaIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/checklists/': {
+      id: '/app/checklists/'
+      path: '/checklists'
+      fullPath: '/app/checklists/'
+      preLoaderRoute: typeof AppChecklistsIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/clientes/': {
       id: '/app/clientes/'
       path: '/clientes'
       fullPath: '/app/clientes/'
       preLoaderRoute: typeof AppClientesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/clientes/$id': {
+      id: '/app/clientes/$id'
+      path: '/clientes/$id'
+      fullPath: '/app/clientes/$id'
+      preLoaderRoute: typeof AppClientesIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/configuracoes/': {
+      id: '/app/configuracoes/'
+      path: '/configuracoes'
+      fullPath: '/app/configuracoes/'
+      preLoaderRoute: typeof AppConfiguracoesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/documentos/': {
+      id: '/app/documentos/'
+      path: '/documentos'
+      fullPath: '/app/documentos/'
+      preLoaderRoute: typeof AppDocumentosIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/processos/': {
@@ -137,19 +290,65 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProcessosIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/processos/$id': {
+      id: '/app/processos/$id'
+      path: '/processos/$id'
+      fullPath: '/app/processos/$id'
+      preLoaderRoute: typeof AppProcessosIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/processos/novo': {
+      id: '/app/processos/novo'
+      path: '/processos/novo'
+      fullPath: '/app/processos/novo'
+      preLoaderRoute: typeof AppProcessosNovoRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/relatorios/': {
+      id: '/app/relatorios/'
+      path: '/relatorios'
+      fullPath: '/app/relatorios/'
+      preLoaderRoute: typeof AppRelatoriosIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/tarefas/': {
+      id: '/app/tarefas/'
+      path: '/tarefas'
+      fullPath: '/app/tarefas/'
+      preLoaderRoute: typeof AppTarefasIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppClientesIdRoute: typeof AppClientesIdRoute
+  AppProcessosIdRoute: typeof AppProcessosIdRoute
+  AppProcessosNovoRoute: typeof AppProcessosNovoRoute
+  AppAgendaIndexRoute: typeof AppAgendaIndexRoute
+  AppChecklistsIndexRoute: typeof AppChecklistsIndexRoute
   AppClientesIndexRoute: typeof AppClientesIndexRoute
+  AppConfiguracoesIndexRoute: typeof AppConfiguracoesIndexRoute
+  AppDocumentosIndexRoute: typeof AppDocumentosIndexRoute
   AppProcessosIndexRoute: typeof AppProcessosIndexRoute
+  AppRelatoriosIndexRoute: typeof AppRelatoriosIndexRoute
+  AppTarefasIndexRoute: typeof AppTarefasIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppClientesIdRoute: AppClientesIdRoute,
+  AppProcessosIdRoute: AppProcessosIdRoute,
+  AppProcessosNovoRoute: AppProcessosNovoRoute,
+  AppAgendaIndexRoute: AppAgendaIndexRoute,
+  AppChecklistsIndexRoute: AppChecklistsIndexRoute,
   AppClientesIndexRoute: AppClientesIndexRoute,
+  AppConfiguracoesIndexRoute: AppConfiguracoesIndexRoute,
+  AppDocumentosIndexRoute: AppDocumentosIndexRoute,
   AppProcessosIndexRoute: AppProcessosIndexRoute,
+  AppRelatoriosIndexRoute: AppRelatoriosIndexRoute,
+  AppTarefasIndexRoute: AppTarefasIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
